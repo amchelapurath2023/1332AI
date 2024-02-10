@@ -1,0 +1,65 @@
+body {
+    background-color: #ADCCF6;
+}
+
+div {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+h1 {
+    font-family:"omnes-pro", sans-serif;
+    font-display:auto;
+    font-weight:800;
+    font-stretch:normal;
+    font-size:80px;
+    color: #FFFFFF;
+}
+
+p {
+    font-family:"omnes-pro", sans-serif;
+    font-display:auto;
+    font-style:italic;
+    font-weight:400px;
+    color:white;
+}
+
+.rounded-button {
+    background-color: #FF443A;
+    border:none;
+    color: white; /* White text */
+    padding: 15px 70px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove default underline */
+    font-family:"amifer";
+    font-size: 30px; /* Font size */
+    margin: 2px 2px; /* Margin */
+    transition-duration: 0.3s; /* Transition duration */
+    border-radius: 40px; /* Rounded corners */
+}
+
+.rounded-button:hover {
+    background-color: #ab2d27; /* Darker green background on hover */
+}
+
+.upload-container {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:#73A7ED;
+    margin:0px 30px;
+    border-style:solid;
+    border-radius:30px;
+    border-color:white;
+
+}
+
+.upload-container label {
+    margin-right: 10px; /* Add space between labels and inputs */
+}
+
+.upload-container input[type="file"] {
+    flex-grow: 1; /* Take up remaining space */
+}
+
