@@ -1,4 +1,3 @@
-package src;
 import java.util.NoSuchElementException;
 /**
  * Your implementation of a CircularSinglyLinkedList without a tail pointer.
