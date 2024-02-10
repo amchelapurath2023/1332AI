@@ -1,4 +1,3 @@
-package src;
 /**
  * Your implementation of a CircularSinglyLinkedList without a tail pointer.
  *

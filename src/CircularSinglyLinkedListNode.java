@@ -1,4 +1,3 @@
-package src;
 /**
  * Node class used for implementing the CircularSinglyLinkedList.
  *
