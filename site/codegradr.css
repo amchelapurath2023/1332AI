@@ -22,6 +22,7 @@ p {
     font-display:auto;
     font-style:italic;
     font-weight:400px;
+    font-size:medium;
     color:white;
 }
 
@@ -29,11 +30,11 @@ p {
     background-color: #FF443A;
     border:none;
     color: white; /* White text */
-    padding: 15px 70px; /* Padding */
+    padding: 10px 50px; /* Padding */
     text-align: center; /* Center text */
     text-decoration: none; /* Remove default underline */
     font-family:"amifer";
-    font-size: 30px; /* Font size */
+    font-size: 20px; /* Font size */
     margin: 2px 2px; /* Margin */
     transition-duration: 0.3s; /* Transition duration */
     border-radius: 40px; /* Rounded corners */
@@ -44,22 +45,76 @@ p {
 }
 
 .upload-container {
-    display:flex;
     justify-content:center;
     align-items:center;
+    text-align:center;
+}
+
+.upload-container label {
+    display:block;
+    font-family:"omnes-pro", sans-serif;
+    font-display:auto;
+    font-weight:400px;
+    font-size:20px;
+    color:white;
+    margin-bottom: 20px; /* Add space between labels and inputs */
+}
+
+.upload-container input[type="file"] {
     background-color:#73A7ED;
+    padding:200px 30px;
     margin:0px 30px;
     border-style:solid;
     border-radius:30px;
     border-color:white;
-
 }
 
-.upload-container label {
-    margin-right: 10px; /* Add space between labels and inputs */
+.feedback-container {
+    justify-content:center;
+    align-items:center;
+    text-align:center;
 }
 
-.upload-container input[type="file"] {
-    flex-grow: 1; /* Take up remaining space */
+.feedback-container label {
+    display:block;
+    font-family:"omnes-pro", sans-serif;
+    font-display:auto;
+    font-weight:400px;
+    font-size:20px;
+    color:white;
+    margin-bottom: 20px;
 }
 
+.feedback-container button {
+    padding-bottom: 10px;
+}
+/*
+.feedback-container p{
+    background-color:#E5E5E5;
+    padding:200px 30px;
+    margin:0px 30px;
+    border-style:solid;
+    border-radius:30px;
+    border-color:#73A7ED;
+    color:black;
+}
+*/
+
+textarea {
+    background-color:#73A7ED;
+    padding:30px 30px;
+    margin:0px 5px;
+    border-style:solid;
+    border-radius:30px;
+    border-color:white;
+}
+
+.chat-gpt {
+    background-color:#E5E5E5;
+    padding:30px 30px;
+    margin:0px 30px;
+    border-style:solid;
+    border-radius:30px;
+    border-color:#73A7ED;
+    color:black;
+}
