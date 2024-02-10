@@ -9,31 +9,31 @@
         <link rel="stylesheet" href="https://use.typekit.net/xpi5zwl.css">
     </head>
     <body>
-        <!-- content of page -->
         <div>
             <h1>CodeGradr.
-                <!--<i class="fa-solid fa-laptop-code" style="size:30px;"></i>-->
             </h1>
         </div>
 
         <div>
             <section>
-                <section class="upload-container">
+                <form action="/test_files" method="post" enctype="multipart/form-data" class="upload-container">
                     <label for="test_files">Upload your test files.</label>
-                    <input type="file" id="test_files" name="file1">
-                </section>
+                    <input type="file" id="test_files" name="file1" multiple webkitdirectory>
+                </form>
             </section>
             <section>
-                <section class="upload-container">
+                <form action="/impl_file" method="post" enctype="multipart/form-data" class="upload-container">
                     <label for="impl_file">Upload the correct implementation.</label>
-                    <input type="file" id="impl_file" name="file2">
-                </section>
+                    <input type="file" id="impl_file" name="file2" multiple webkitdirectory>
+                </form>
             </section>
         </div>
         
         <div>
             <p>
-            <button class="rounded-button" id="nextButton">NEXT</button>
+                <a href="feedback.html">
+                    <button class="rounded-button" id="nextButton">NEXT</button>
+                </a>
             </p>
         </div>
 
