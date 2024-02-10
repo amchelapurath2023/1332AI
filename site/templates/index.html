@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>CodeGradr.</title>
-        <link rel="stylesheet" type="text/css" href="static/codegradr.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='codegradr.css') }}">
         <script src="https://kit.fontawesome.com/6a36c605f0.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://use.typekit.net/xpi5zwl.css">
     </head>
@@ -31,7 +31,7 @@
         
         <div>
             <p>
-                <a href="feedback.html">
+                <a href="{{ url_for('feedback') }}">
                     <button class="rounded-button" id="nextButton">NEXT</button>
                 </a>
             </p>

@@ -8,7 +8,7 @@ app.template_folder ='templates'
 def index():
     return render_template('index.html')
 
-@app.route('/')
+@app.route('/feedback')
 def feedback():
     return render_template('feedback.html')
 
