@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- head definitions go here -->
+    </head>
+    <body>
+        <!-- the content goes here -->
+        <h1>DISTILL NEWS</h1>
+        <textarea id="article" rows = "10"></textarea>
+        <button id="submitButton">Submit</button>
+        <p id="output"></p>
+
+        <script>
+            const sendRequest = async () => {
+                let text = document.getElementById("article").value;
+                const response = await fetch("http://127.0.0.1:8000/summarize", {
+                    method: "POST",
+                    body: text,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const jsonResponse = await response.json();
+                document.getElementById("output").innerHTML = JSON.stringify(jsonResponse);
+            }
+
+            document.getElementById("submitButton").addEventListener("click",sendRequest);
+            
+        </script>
+    </body>
+</html>
