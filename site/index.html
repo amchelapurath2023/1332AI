@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CodeGradr.</title>
+        <link rel="stylesheet" type="text/css" href="codegradr.css">
+        <script src="https://kit.fontawesome.com/6a36c605f0.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.typekit.net/xpi5zwl.css">
+    </head>
+    <body>
+        <!-- content of page -->
+        <div>
+            <h1>CodeGradr.
+                <!--<i class="fa-solid fa-laptop-code" style="size:30px;"></i>-->
+            </h1>
+        </div>
+
+        <div>
+            <section>
+                <p>
+                    Upload your test files.
+                </p>
+                <section class="upload-container">
+                    <input type="file" id="test_files" name="file1">
+                </section>
+            </section>
+            
+            <section>
+                <p>
+                    Upload the correct implementation.
+                </p>
+                <section class="upload-container">
+                    <input type="file" id="test_files" name="file1">
+                </section>
+            </section>
+        </div>
+        
+        <div>
+            <p>
+            <button class="rounded-button" id="runButton">RUN!</button>
+            </p>
+        </div>
+
+        <!--
+        <script>
+            const sendRequest = async () => {
+                let text = document.getElementById("article").value;
+                const response = await fetch("http://127.0.0.1:8000/summarize", {
+                    method: "POST",
+                    body: text,
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                const jsonResponse = await response.json();
+                document.getElementById("output").innerHTML = JSON.stringify(jsonResponse);
+            }
+
+            document.getElementById("submitButton").addEventListener("click",sendRequest);
+            -->
+        </script>
+    </body>
+</html>
