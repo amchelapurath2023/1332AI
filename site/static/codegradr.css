@@ -60,13 +60,17 @@ p {
     margin-bottom: 20px; /* Add space between labels and inputs */
 }
 
-form {
+.upload-container input {
     background-color:#73A7ED;
     padding:200px 30px;
     margin:0px 30px;
     border-style:solid;
     border-radius:30px;
     border-color:white;
+}
+
+form {
+    display:flex;
 }
 
 .feedback-container {
