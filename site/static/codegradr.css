@@ -41,7 +41,7 @@ p {
 }
 
 .rounded-button:hover {
-    background-color: #ab2d27; /* Darker green background on hover */
+    background-color: #ab2d27; /* Darker red background on hover */
 }
 
 .upload-container {
@@ -60,7 +60,7 @@ p {
     margin-bottom: 20px; /* Add space between labels and inputs */
 }
 
-.upload-container input[type="file"] {
+form {
     background-color:#73A7ED;
     padding:200px 30px;
     margin:0px 30px;
@@ -88,17 +88,6 @@ p {
 .feedback-container button {
     padding-bottom: 10px;
 }
-/*
-.feedback-container p{
-    background-color:#E5E5E5;
-    padding:200px 30px;
-    margin:0px 30px;
-    border-style:solid;
-    border-radius:30px;
-    border-color:#73A7ED;
-    color:black;
-}
-*/
 
 textarea {
     background-color:#73A7ED;
