@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-import openai
+from openai import OpenAI
 import os
 import subprocess
 import glob
@@ -11,6 +11,8 @@ UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads
 JUNIT_JAR = os.path.join(UPLOAD_FOLDER, 'junit-4.13.2.jar')
 HAMCREST_JAR = os.path.join(UPLOAD_FOLDER, 'hamcrest-core-1.3.jar')
 all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
+os.environ['OPENAI_API_KEY'] = ''
+client = OpenAI()
 
 @app.route('/')
 def index(error=''):
@@ -114,7 +116,35 @@ def feedback():
 
     path = UPLOAD_FOLDER + "/" + student_filename
     student_implementation = read_file_to_string(path)
-    return render_template('feedback.html', code=student_implementation)
+    path = UPLOAD_FOLDER + "/" + test_filename
+    tests = read_file_to_string(path)
+
+    prompt = generate_prompt(student_implementation, tests)
+    
+    response = client.chat.completions.create(messages=[
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        model="gpt-3.5-turbo",
+    )
+
+    result = response.choices[0].message.content
+    
+    return render_template('feedback.html', code=student_implementation, gpt_response=result)
+
+def generate_prompt(code, tests):
+    return f""" 
+    Here is the student's implementation:
+    {code}
+    
+    Here are the test cases we are grading them on. These are JUnit test cases. Assume the Util file is implemented.
+    {tests}
+    
+    Please explain in detail where the student went wrong and how they can correct their mistakes. Point
+    to lines in their code where the errors occur in a succinct way. Using bullet points would be helpful.
+    """
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
