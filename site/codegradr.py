@@ -11,6 +11,7 @@ UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads
 JUNIT_JAR = os.path.join(UPLOAD_FOLDER, 'junit-4.13.2.jar')
 HAMCREST_JAR = os.path.join(UPLOAD_FOLDER, 'hamcrest-core-1.3.jar')
 all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
+# UPLOAD YOUR OWN API_KEY
 os.environ['OPENAI_API_KEY'] = ''
 client = OpenAI()
 
