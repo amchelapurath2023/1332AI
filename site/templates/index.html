@@ -20,13 +20,13 @@
                 <section>
                     <section class="upload-container">
                         <label>Upload your test files.</label>
-                        <input type="file" name="test_files" id="test_files" accept=".java">
+                        <input type="file" name="test_files" id="test_files" accept=".java" multiple>
                     </section>
                 </section>
                 <section>
                     <section class="upload-container">
                         <label>Upload your implementation.</label>
-                        <input type="file" name="solution_files" id="solution_files" accept=".java">
+                        <input type="file" name="solution_files" id="solution_files" accept=".java" multiple>
                     </section>
                 </section>
             </form>
@@ -45,11 +45,7 @@
                 
                 // Submit the form
                 document.getElementById("fileForm").submit();
-                
-                // Redirect the user to another page
-                window.location.href = "/feedback";
             });
-            
         </script> 
     </body>
 </html>
