@@ -15,10 +15,10 @@
         </div>
 
         <div>
-            <section>
+            <section style="display:flex;">
                 <section class="feedback-container">
-                    <label>Copy and paste the student implementation.</label>
-                    <textarea id="student_impl" name="student_impl" rows="30" cols="60">your student's code here</textarea>
+                    <label>Here is the student implementation.</label>
+                    <textarea id="student_impl" name="student_impl" rows="30" cols="60">{{ code }}</textarea>
                     <section display="flex">
                         <p>
                             <button class="rounded-button" id="compileButton">COMPILE</button>
@@ -26,8 +26,6 @@
                         </p>
                     </section>
                 </section>
-            </section>
-            <section>
                 <section class="feedback-container">
                     <label><i class="fa-solid fa-laptop-code"></i></label>
                     <textarea id="gpt_response" name="gpt_response" class="chat-gpt" rows="30" cols="40">chat-gpt generated response

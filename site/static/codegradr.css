@@ -1,11 +1,12 @@
 body {
     background-color: #ADCCF6;
+    display: grid;
+    place-items: center;
+    justify-content:center;
 }
 
 div {
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    display:block;
 }
 
 h1 {
@@ -15,6 +16,15 @@ h1 {
     font-stretch:normal;
     font-size:80px;
     color: #FFFFFF;
+    margin:0;
+}
+
+h2 {
+    font-family:"omnes-pro", sans-serif;
+    font-display:auto;
+    font-size:20px;
+    color:red;
+    text-align:center;
 }
 
 p {
