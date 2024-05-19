@@ -16,45 +16,58 @@
 
         <div>
             <section style="display:flex;">
-                <section class="feedback-container">
-                    <label>Here is the student implementation.</label>
-                    <textarea id="student_impl" name="student_impl" rows="30" cols="60">{{ code }}</textarea>
-                    <section display="flex">
-                        <p>
-                            <button class="rounded-button" id="compileButton">COMPILE</button>
-                            <button class="rounded-button" id="runButton">RUN</button>
-                        </p>
+                <form action="/compile" id="studentCode" method="post" enctype="multipart/form-data">
+                    <section class="feedback-container">
+                        <label>Comple and run the student's implementation. Then, generate feedback. </label>
+                        <textarea id="student_impl" name="student_impl" rows="25" cols="60">{{ code }}</textarea>
+                        <section display="flex">
+                            <p>
+                                <button type="submit" class="rounded-button" id="compileButton">COMPILE</button>
+                                <button class="rounded-button" id="runButton">RUN</button>
+                            </p>
+                        </section>
                     </section>
-                </section>
+                </form>
                 <section class="feedback-container">
                     <label><i class="fa-solid fa-laptop-code"></i></label>
-                    <textarea id="gpt_response" name="gpt_response" class="chat-gpt" rows="30" cols="40">{{ gpt_response }}
-                    </textarea>
+                    <textarea id="gpt_response" name="gpt_response" class="chat-gpt" rows="25" cols="40">{{ gpt_response }}</textarea>
                     <p>
-                        <button class="rounded-button" id="generate_button">GENERATE FEEDBACK</button>
+                        <button class="rounded-button" id="generateButton">GENERATE FEEDBACK</button>
                     </p>
                 </section>
             </section>
         </div>
-    
 
-        <!--
         <script>
-            const sendRequest = async () => {
-                let text = document.getElementById("article").value;
-                const response = await fetch("http://127.0.0.1:8000/summarize", {
-                    method: "POST",
-                    body: text,
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-                const jsonResponse = await response.json();
-                document.getElementById("output").innerHTML = JSON.stringify(jsonResponse);
-            }
+            /*document.addEventListener("DOMContentLoaded", function() {
+                console.log("DOMContentLoaded"); 
+                var i = 0;
+                var speed = 50;
+                var txt = {{ gpt_response | safe }};
+                console.log(txt);
 
-            document.getElementById("submitButton").addEventListener("click",sendRequest);
-            -->
+                function typeWriter() {
+                    if (i < txt.length) {
+                        document.getElementById("gpt_response").innerHTML += txt.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, speed);
+                    }
+                }
+
+                typeWriter(); 
+            }); */
+            
+            document.getElementById("compileButton").addEventListener("click", function(event){
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                
+                // Submit the form
+                document.getElementById("studentCode").submit();
+            });
+
+            document.getElementById("generateButton").addEventListener("click", function(event){
+                window.location.href = "{{ url_for('response') }}"; 
+            });
         </script>
     </body>
 </html>

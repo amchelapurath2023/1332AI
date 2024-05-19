@@ -104,6 +104,7 @@ form {
 }
 
 textarea {
+    padding-left: 60px;
     background-color:#73A7ED;
     padding:30px 30px;
     margin:0px 5px;
@@ -120,4 +121,19 @@ textarea {
     border-radius:30px;
     border-color:#73A7ED;
     color:black;
+}
+
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.blinking-cursor::after {
+    content: '|';
+    font-weight: 100;
+    font-size: 20px;
+    color: black;
+    animation: blink 1s infinite;
 }
