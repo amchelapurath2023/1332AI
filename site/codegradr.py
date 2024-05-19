@@ -67,6 +67,7 @@ def compile():
 
     # Define the file path
     student_filename = solution_filename[:-13] + '.java'
+    print(student_filename)
     filepath = os.path.join(UPLOAD_FOLDER, student_filename)
     
     # Write the code to a .java file
@@ -78,7 +79,7 @@ def compile():
     try:
         compile_process = subprocess.run(['javac', student_filename], cwd=UPLOAD_FOLDER, capture_output=True, text=True)
         if compile_process.returncode != 0:
-            print("student code did failed to compile")
+            print("student code failed to compile")
             response = 'student code did not compile\n' + compile_process.stderr
             return render_template('feedback.html', code=request.form['student_impl'], gpt_response=response)
         else:
@@ -120,6 +121,9 @@ def response():
     )
 
     result = response.choices[0].message.content
+
+    # result = "pretend this is a long ass chat response to avoid using my gpt cash"
+    # print(result)
 
     return result
 

@@ -39,38 +39,6 @@
         </div>
 
         <script>
-            /*document.addEventListener("DOMContentLoaded", function() {
-                console.log("DOMContentLoaded"); 
-                var i = 0;
-                var speed = 50;
-                var txt = {{ gpt_response | safe }};
-                console.log(txt);
-
-                function typeWriter() {
-                    if (i < txt.length) {
-                        document.getElementById("gpt_response").innerHTML += txt.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, speed);
-                    }
-                }
-
-                typeWriter(); 
-            }); */
-        
-            /* function typeWriter(txt) {
-                var i = 0;
-                var speed = 50; 
-                function type() {
-                    if (i < txt.length) {
-                        document.getElementById("gpt_response").value += txt.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, speed);
-                    }
-                }
-
-                type();
-            }*/
-            
             document.getElementById("compileButton").addEventListener("click", function(event){
                 // Prevent the default form submission behavior
                 event.preventDefault();
@@ -80,18 +48,32 @@
             });
 
             document.getElementById("generateButton").addEventListener("click", function(event){
-                // window.location.href = "{{ url_for('response') }}"; 
+                document.getElementById("gpt_response").value = "waiting for gpt..."; 
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/response", true);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // Update textarea with new text received from the server
-                        // typeWriter(xhr.responseText); 
-                        document.getElementById("gpt_response").value = xhr.responseText;
+                        document.getElementById("gpt_response").value = ""; 
+                        typeWriter(xhr.responseText); 
+                        // document.getElementById("gpt_response").value = xhr.responseText;
                     }
                 };
                 xhr.send();
             });
+
+            function typeWriter(txt) {
+                var i = 0;
+                var speed = 50; 
+                function type() {
+                    if (i < txt.length) {
+                        document.getElementById("gpt_response").value += txt.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    }
+                }
+                type();
+            }
         </script>
     </body>
 </html>
