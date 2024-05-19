@@ -16,7 +16,7 @@ all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
 solution_filename = ""
 test_filename = ""
 for file in all_files:
-    if "Test" not in file and "Node" not in file:
+    if "Solution.java" in file:
         solution_filename = file
     if "Test.java" in file:
         test_filename = file
@@ -121,7 +121,7 @@ def response():
 
     result = response.choices[0].message.content
 
-    return render_template('feedback.html', code=student, gpt_response=result)
+    return result
 
 def compile_and_run_java_files(code, test):
     print("compile_and_run_java_files")

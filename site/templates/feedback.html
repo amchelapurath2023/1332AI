@@ -56,6 +56,20 @@
 
                 typeWriter(); 
             }); */
+        
+            /* function typeWriter(txt) {
+                var i = 0;
+                var speed = 50; 
+                function type() {
+                    if (i < txt.length) {
+                        document.getElementById("gpt_response").value += txt.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, speed);
+                    }
+                }
+
+                type();
+            }*/
             
             document.getElementById("compileButton").addEventListener("click", function(event){
                 // Prevent the default form submission behavior
@@ -66,7 +80,17 @@
             });
 
             document.getElementById("generateButton").addEventListener("click", function(event){
-                window.location.href = "{{ url_for('response') }}"; 
+                // window.location.href = "{{ url_for('response') }}"; 
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/response", true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Update textarea with new text received from the server
+                        // typeWriter(xhr.responseText); 
+                        document.getElementById("gpt_response").value = xhr.responseText;
+                    }
+                };
+                xhr.send();
             });
         </script>
     </body>
