@@ -31,6 +31,12 @@ client = OpenAI()
 @app.route('/uploads', methods=['POST']) 
 def uploads():
     print('inside uploads')
+    # Clear all previous java files in folder
+    for file in all_files: 
+        if os.path.exists(file):
+            print('removing files')
+            os.remove(file)
+
     # Check if the POST request has the file part
     if 'test_files' not in request.files or 'solution_files' not in request.files:
         return 'No file part'
@@ -105,7 +111,7 @@ def response():
     student_filename = solution_filename[:-13] + '.java'
     student = read_file_to_string(student_filename)
 
-    prompt = generate_prompt(solution, tests, student)
+    '''prompt = generate_prompt(solution, tests, student)
     
     response = client.chat.completions.create(messages=[
             {
@@ -120,9 +126,10 @@ def response():
         model="gpt-3.5-turbo",
     )
 
-    result = response.choices[0].message.content
+    result = response.choices[0].message.content'''
 
-    # result = "pretend this is a long ass chat response to avoid using my gpt cash"
+
+    result = "pretend this is a long ass chat response to avoid using my gpt cash"
     # print(result)
 
     return result
@@ -170,6 +177,7 @@ def generate_prompt(solution, tests, student):
 
 @app.route('/', methods=['GET'])
 def index(error=''):
+
     return render_template('index.html', error=error)
 
 @app.route('/feedback', methods=['GET'])
