@@ -14,7 +14,7 @@ JUNIT_JAR = os.path.join(UPLOAD_FOLDER, 'junit-4.13.2.jar')
 HAMCREST_JAR = os.path.join(UPLOAD_FOLDER, 'hamcrest-core-1.3.jar')
 
 # UPLOAD YOUR OWN API_KEY
-os.environ['OPENAI_API_KEY'] = ''
+os.environ['OPENAI_API_KEY'] = 'sk-proj-56uZpDkjJXOi9rTGR3jvT3BlbkFJUFiAiNBe2iwWklWH7vqF'
 client = OpenAI()
 
 
@@ -95,7 +95,8 @@ def run():
     test_filename = get_file('Test.java')
     print('Test name:', test_filename)
     try:
-        run_process = subprocess.run(['java', 'Main', test_filename[:-4]], cwd=UPLOAD_FOLDER, capture_output=True, text=True)
+        run_process = subprocess.run(['java', '-cp', f'.:{JUNIT_JAR}:{HAMCREST_JAR}', 'Main', test_filename[:-4]], 
+                                     cwd=UPLOAD_FOLDER, capture_output=True, text=True)
         if run_process.returncode == 0:
             response = 'tests successfully ran, continue to generating feedback'
             print(response)
@@ -123,7 +124,7 @@ def response():
     tests = read_file_to_string(test_filename)
     student = read_file_to_string(student_filename)
 
-    '''prompt = generate_prompt(solution, tests, student)
+    prompt = generate_prompt(solution, tests, student)
     
     response = client.chat.completions.create(messages=[
             {
@@ -138,10 +139,10 @@ def response():
         model="gpt-3.5-turbo",
     )
 
-    result = response.choices[0].message.content'''
+    result = response.choices[0].message.content
 
 
-    result = "pretend this is a long ass chat response to avoid using my gpt cash"
+    # result = "pretend this is a long ass chat response to avoid using my gpt cash"
     # print(result)
 
     return result
@@ -183,8 +184,8 @@ def compile_all_files():
     try:
         # Compile all files
         all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
-        compile_process = subprocess.run(['javac', '-cp', f'.:{JUNIT_JAR}:{HAMCREST_JAR}'] + all_files, cwd=UPLOAD_FOLDER,
-                                        capture_output=True, text=True)
+        compile_process = subprocess.run(['javac', '-cp', f'.:{JUNIT_JAR}:{HAMCREST_JAR}'] + all_files, 
+                                         cwd=UPLOAD_FOLDER, capture_output=True, text=True)
         
         if compile_process.returncode != 0:
             return f"Compilation failed:\n{compile_process.stderr}"
@@ -204,7 +205,7 @@ def read_file_to_string(file_path):
         return str(e)
 
 def generate_prompt(solution, tests, student):
-    return f""" 
+    str = f""" 
     Here is the correct implementation:
     {solution}
     
@@ -219,6 +220,7 @@ def generate_prompt(solution, tests, student):
     to lines in their code where the errors occur in a succinct way. Comparing and contrasting with the 
     solution code would be very helpful. Using bullet points is helpful, too.
     """
+    return str[:16385]
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

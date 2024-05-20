@@ -18,59 +18,49 @@
             <section style="display:flex;">
                 <form action="/compile" id="studentCode" method="post" enctype="multipart/form-data">
                     <section class="feedback-container">
-                        <label>Comple and run the student's implementation. Then, generate feedback. </label>
+                        <label>Compile and run the student's implementation. Then, generate feedback. </label>
                         <textarea id="student_impl" name="student_impl" rows="25" cols="60">{{ code }}</textarea>
                         <section display="flex">
                             <p>
                                 <button type="submit" class="rounded-button" id="compileButton">COMPILE</button>
-                                <button class="rounded-button" id="runButton">RUN</button>
+                                <button type="button" class="rounded-button" id="runButton">RUN</button>
                             </p>
                         </section>
                     </section>
                 </form>
                 <section class="feedback-container">
                     <label><i class="fa-solid fa-laptop-code"></i></label>
-                    <textarea id="gpt_response" name="gpt_response" class="chat-gpt" rows="25" cols="40">{{ gpt_response }}</textarea>
+                    <textarea id="gptResponse" class="chat-gpt" rows="25" cols="40">{{ gpt_response }}</textarea>
                     <p>
-                        <button class="rounded-button" id="generateButton">GENERATE FEEDBACK</button>
+                        <button id="generateButton" class="rounded-button">GENERATE FEEDBACK</button>
                     </p>
                 </section>
             </section>
         </div>
 
         <script>
-            document.getElementById("compileButton").addEventListener("click", function(event){
-                // Prevent the default form submission behavior
-                event.preventDefault();
-                
-                // Submit the form
-                document.getElementById("studentCode").submit();
-            });
-
             document.getElementById("runButton").addEventListener("click", function(event) {
+                event.preventDefault();
+                document.getElementById("gptReponse").value = "running test files...";
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/run", true);
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
-                            // Update textarea with new text received from the server
-                            document.getElementById("gpt_response").value = xhr.responseText;
-                        } else {
-                            console.error('Error:', xhr.statusText);
-                        }
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        document.getElementById("gptResponse").value = '';
+                        typeWriter(xhr.responseText);
                     }
                 };
                 xhr.send();
             });
 
-            document.getElementById("generateButton").addEventListener("click", function(event){
-                document.getElementById("gpt_response").value = "waiting for gpt..."; 
+            document.getElementById("generateButton").addEventListener("click", function(event) {
+                document.getElementById("gptResponse").value = "waiting for gpt..."; 
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", "/response", true);
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         // Update textarea with new text received from the server
-                        document.getElementById("gpt_response").value = ""; 
+                        document.getElementById("gptResponse").value = ""; 
                         typeWriter(xhr.responseText); 
                     }
                 };
@@ -82,7 +72,7 @@
                 var speed = 50; 
                 function type() {
                     if (i < txt.length) {
-                        document.getElementById("gpt_response").value += txt.charAt(i);
+                        document.getElementById("gptResponse").value += txt.charAt(i);
                         i++;
                         setTimeout(type, speed);
                     }
