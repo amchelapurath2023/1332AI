@@ -14,7 +14,7 @@ JUNIT_JAR = os.path.join(UPLOAD_FOLDER, 'junit-4.13.2.jar')
 HAMCREST_JAR = os.path.join(UPLOAD_FOLDER, 'hamcrest-core-1.3.jar')
 
 # UPLOAD YOUR OWN API_KEY
-os.environ['OPENAI_API_KEY'] = 'sk-proj-56uZpDkjJXOi9rTGR3jvT3BlbkFJUFiAiNBe2iwWklWH7vqF'
+os.environ['OPENAI_API_KEY'] = ''
 client = OpenAI()
 
 

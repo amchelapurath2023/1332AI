@@ -23,7 +23,7 @@
                         <section display="flex">
                             <p>
                                 <button type="submit" class="rounded-button" id="compileButton">COMPILE</button>
-                                <button type="button" class="rounded-button" id="runButton">RUN</button>
+                                <button class="rounded-button" id="runButton">RUN</button>
                             </p>
                         </section>
                     </section>
@@ -47,7 +47,6 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         document.getElementById("gptResponse").value = '';
-                        typeWriter(xhr.responseText);
                     }
                 };
                 xhr.send();
