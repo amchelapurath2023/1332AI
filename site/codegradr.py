@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from openai import OpenAI
 import os
 import subprocess
@@ -12,35 +12,28 @@ app.template_folder ='templates'
 UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'uploads'))
 JUNIT_JAR = os.path.join(UPLOAD_FOLDER, 'junit-4.13.2.jar')
 HAMCREST_JAR = os.path.join(UPLOAD_FOLDER, 'hamcrest-core-1.3.jar')
-all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
-solution_filename = ""
-test_filename = ""
-for file in all_files:
-    if "Solution.java" in file:
-        solution_filename = file
-    if "Test.java" in file:
-        test_filename = file
-    if solution_filename and test_filename:
-        break
 
 # UPLOAD YOUR OWN API_KEY
-# 'sk-proj-56uZpDkjJXOi9rTGR3jvT3BlbkFJUFiAiNBe2iwWklWH7vqF'
-os.environ['OPENAI_API_KEY'] = 'sk-proj-56uZpDkjJXOi9rTGR3jvT3BlbkFJUFiAiNBe2iwWklWH7vqF'
+os.environ['OPENAI_API_KEY'] = ''
 client = OpenAI()
+
+
+@app.route('/', methods=['GET'])
+def index(error=''):
+    return render_template('index.html', error=error)
+
+@app.route('/feedback', methods=['GET'])
+def feedback():
+    return render_template('feedback.html', code='paste student\'s implementation here', gpt_response='click \'generate feedback\' to get a response')
 
 @app.route('/uploads', methods=['POST']) 
 def uploads():
     print('inside uploads')
+
     # Clear all previous java files in folder
-    for file in all_files: 
-        if os.path.exists(file):
-            print('removing files')
-            os.remove(file)
+    delete_all_files()
 
-    # Check if the POST request has the file part
-    if 'test_files' not in request.files or 'solution_files' not in request.files:
-        return 'No file part'
-
+    # Get inputted files
     test_files = request.files.getlist('test_files')
     solution_files = request.files.getlist('solution_files')
 
@@ -57,29 +50,26 @@ def uploads():
     
     # Save the uploaded files
     for test_file in test_files:
-       if test_file.filename:  # Only save if a filename is provided
-            test_file.save(os.path.join(UPLOAD_FOLDER, test_file.filename))
+       name = test_file.filename
+       if name:
+            test_file.save(os.path.join(UPLOAD_FOLDER, name))
 
     for solution_file in solution_files:
-        if solution_file.filename:  # Only save if a filename is provided
-            newName = solution_file.filename[:-5] + 'Solution.java'
-            solution_file.save(os.path.join(UPLOAD_FOLDER, newName))
+        name = solution_file.filename
+        if name:
+            if 'Node' not in name and 'Entry' not in name:
+                name = name[:-5] + 'Solution.txt'
+            solution_file.save(os.path.join(UPLOAD_FOLDER, name))
 
-    return redirect(url_for('feedback'))
+    return feedback()
 
 @app.route('/compile', methods=['POST'])
 def compile():
     print('inside compile')
 
     # Define the file path
-    student_filename = solution_filename[:-13] + '.java'
-    print(student_filename)
-    filepath = os.path.join(UPLOAD_FOLDER, student_filename)
-    
-    # Write the code to a .java file
-    with open(filepath, 'w') as file:
-        print('writing to', student_filename)
-        file.write(request.form['student_impl'])
+    student_filename = get_file('Solution.txt')[:-12] + '.java'
+    create_and_write_to_file(student_filename, request.form['student_impl'])
 
     # compile student code 
     try:
@@ -90,25 +80,47 @@ def compile():
             return render_template('feedback.html', code=request.form['student_impl'], gpt_response=response)
         else:
             print("student code compiled")
-            response = 'student code compiled, continue to generating feedback'
+            response = 'student code compiled'
             return render_template('feedback.html', code=request.form['student_impl'], gpt_response=response)
     
     except Exception as e:
         return render_template('feedback.html', code=request.form['student_impl'], gpt_response=str(e))
 
-@app.route('/run', methods=['POST'])
+@app.route('/run', methods=['GET'])
 def run():
-    # run junits, idk how to do this part 
-    return 0
+    # Compile all files in folder
+    compilaton_output = compile_all_files()
+
+    # Run the compiled Java program
+    test_filename = get_file('Test.java')
+    print('Test name:', test_filename)
+    try:
+        run_process = subprocess.run(['java', 'Main', test_filename[:-4]], cwd=UPLOAD_FOLDER, capture_output=True, text=True)
+        if run_process.returncode == 0:
+            response = 'tests successfully ran, continue to generating feedback'
+            print(response)
+            return response
+        else:
+            response = 'issue with running tests...'
+            print(run_process.stderr)
+            return response + '\n' + run_process.stderr
+    except Exception as e:
+        print(str(e))
+        return str(e) 
 
 @app.route('/response', methods=['GET'])
 def response():
     print('inside response')
-    # output = compile_and_run_java_files(solution_filename, test_filename)
 
+    # get file names
+    solution_filename = get_file('Solution.txt')
+    test_filename = get_file('Test.java')
+    student_filename = solution_filename[:-12] + '.java'
+
+
+    # get file contents
     solution = read_file_to_string(solution_filename)
     tests = read_file_to_string(test_filename)
-    student_filename = solution_filename[:-13] + '.java'
     student = read_file_to_string(student_filename)
 
     '''prompt = generate_prompt(solution, tests, student)
@@ -134,10 +146,43 @@ def response():
 
     return result
 
-def compile_and_run_java_files(code, test):
-    print("compile_and_run_java_files")
+def get_all_files():
+    all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
+    all_files += glob.glob(os.path.join(UPLOAD_FOLDER, '*.txt'))
+    all_files += glob.glob(os.path.join(UPLOAD_FOLDER, '*.class'))
+    return all_files
+
+def delete_all_files():
+    print('delete_all_files')
+    all_files = get_all_files()
+    for file in all_files: 
+        if os.path.exists(file) and 'Main' not in file:
+            os.remove(file)
+    
+def get_file(keyword):
+    print('get_file:', keyword)
+    all_files = get_all_files()
+    for file in all_files:
+        i = 0
+        if keyword in file:
+            return file
+        
+    return 'file not found'
+
+def create_and_write_to_file(filename, content):
+    # Define the file path
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    
+    # Write the code to a .java file
+    with open(filepath, 'w') as file:
+        print('writing to', filename)
+        file.write(content)
+
+def compile_all_files():
+    print("compile_all_files")
     try:
         # Compile all files
+        all_files = glob.glob(os.path.join(UPLOAD_FOLDER, '*.java'))
         compile_process = subprocess.run(['javac', '-cp', f'.:{JUNIT_JAR}:{HAMCREST_JAR}'] + all_files, cwd=UPLOAD_FOLDER,
                                         capture_output=True, text=True)
         
@@ -174,15 +219,6 @@ def generate_prompt(solution, tests, student):
     to lines in their code where the errors occur in a succinct way. Comparing and contrasting with the 
     solution code would be very helpful. Using bullet points is helpful, too.
     """
-
-@app.route('/', methods=['GET'])
-def index(error=''):
-
-    return render_template('index.html', error=error)
-
-@app.route('/feedback', methods=['GET'])
-def feedback():
-    return render_template('feedback.html', code='paste student\'s implementation here', gpt_response='click \'generate feedback\' to get a response')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -47,6 +47,22 @@
                 document.getElementById("studentCode").submit();
             });
 
+            document.getElementById("runButton").addEventListener("click", function(event) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "/run", true);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            // Update textarea with new text received from the server
+                            document.getElementById("gpt_response").value = xhr.responseText;
+                        } else {
+                            console.error('Error:', xhr.statusText);
+                        }
+                    }
+                };
+                xhr.send();
+            });
+
             document.getElementById("generateButton").addEventListener("click", function(event){
                 document.getElementById("gpt_response").value = "waiting for gpt..."; 
                 var xhr = new XMLHttpRequest();
@@ -56,7 +72,6 @@
                         // Update textarea with new text received from the server
                         document.getElementById("gpt_response").value = ""; 
                         typeWriter(xhr.responseText); 
-                        // document.getElementById("gpt_response").value = xhr.responseText;
                     }
                 };
                 xhr.send();
