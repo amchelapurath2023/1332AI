@@ -80,7 +80,7 @@ p {
 }
 
 form {
-    display:block;
+    display:flex;
 }
 
 .feedback-container {
