@@ -4,7 +4,7 @@ Codegradr is a web application using generative AI to provide feedback for routi
 
 The way CodeGradr works is you upload the files containing 1) your test cases (e.g. JUnits) for the assignment, and 2) the correct implementation.
 
-Copy and paste a student's code, then click "Compile" and "Run" in sequence to make sure the code works.
+Copy and paste a student's code, then click "Compile" and "Run" in sequence to make sure the code works. Currently, we only have support for compiling in Java and running against JUnit tests. Skip this step if you are using a language other than Java and/or a testing framework different than JUnits. 
 
 Then, click "Generate Feedback" for a ChatGPT generated response based on the JUnits the student's code failed and the correct implementation.
 
