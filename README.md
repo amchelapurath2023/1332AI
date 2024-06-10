@@ -8,7 +8,9 @@ Copy and paste a student's code, then click "Compile" and "Run" in sequence to m
 
 Then, click "Generate Feedback" for a ChatGPT generated response based on the JUnits the student's code failed and the correct implementation.
 
-View the demo images below for guidance:
+### NOTE: You do have to [create and use your own OpenAI API key](https://platform.openai.com/docs/quickstart) for this project. You can easily insert it in line 17 of `site/codegradr.py`. 
+
+View the demo images below for user guidance:
 
 ![image](https://github.com/amchelapurath2023/1332AI/assets/62963846/b71cc2bd-36b3-466e-a021-a80a38b6bcb7)
 
